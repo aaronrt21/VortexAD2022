@@ -51,11 +51,16 @@ int rc_auto_loop_function_Controller1()
     LeftBackMotor.setVelocity(LBM_Speed, percent);
     RightFrontMotor.setVelocity(RFM_Speed, percent);
     RightBackMotor.setVelocity(RBM_Speed, percent);
-    */
+    
     LeftFrontMotor.setVelocity(-Controller1.Axis1.position() + Controller1.Axis2.position() + Controller1.Axis4.position(), percent);
     LeftBackMotor.setVelocity(-Controller1.Axis1.position() - Controller1.Axis2.position() + Controller1.Axis4.position(), percent);
     RightFrontMotor.setVelocity((Controller1.Axis1.position()) + Controller1.Axis2.position() + Controller1.Axis4.position(), percent);
     RightBackMotor.setVelocity((Controller1.Axis1.position()) - Controller1.Axis2.position() + Controller1.Axis4.position(), percent);
+    */
+    LeftFrontMotor.setVelocity(-Controller1.Axis4.position() + Controller1.Axis3.position() + Controller1.Axis1.position(), percent);
+    LeftBackMotor.setVelocity(-Controller1.Axis4.position() - Controller1.Axis3.position() + Controller1.Axis1.position(), percent);
+    RightFrontMotor.setVelocity((Controller1.Axis4.position()) + Controller1.Axis3.position() + Controller1.Axis1.position(), percent);
+    RightBackMotor.setVelocity((Controller1.Axis4.position()) - Controller1.Axis3.position() + Controller1.Axis1.position(), percent);
     LeftFrontMotor.spin(fwd);
     LeftBackMotor.spin(fwd);
     RightFrontMotor.spin(fwd);
