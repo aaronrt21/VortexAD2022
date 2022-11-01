@@ -11,11 +11,24 @@
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
-
 using namespace vex;
 
-int main() {
+competition Competition;
+
+void pre_auton(void)
+{
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-  
+  // All activities that occur before the competition starts
+  // Example: clearing encoders, setting servo positions, ...
+}
+
+void usercontrol(void)
+{
+  rc_auto_loop_function_Controller1();
+}
+
+int main() {
+  pre_auton();
+  usercontrol();
 }
