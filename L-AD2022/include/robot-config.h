@@ -9,11 +9,11 @@ extern brain Brain;
  */
 
 // VEXcode devices
-extern drivetrain Drivetrain;
-extern motor LeftDriveA;
-extern motor LeftDriveB;
-extern motor RightDriveA;
-extern motor RightDriveB;
+extern motor LeftFrontMotor;
+extern motor LeftBackMotor;
+extern motor RightFrontMotor;
+extern motor RightBackMotor;
 extern controller Controller1;
+extern int rc_auto_loop_function_Controller1();
 
 void vexcodeInit(void);
