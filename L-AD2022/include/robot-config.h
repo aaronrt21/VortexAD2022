@@ -22,6 +22,8 @@ extern motor LauncherRB;
 extern motor_group LauncherLeft;
 extern motor_group LauncherRight;
 
+extern motor Loader;
+
 extern controller Controller1;
 extern int rc_auto_loop_function_Controller1();
 
