@@ -18,13 +18,15 @@ motor LeftBackMotor = motor(PORT2, ratio18_1, false);
 motor RightFrontMotor = motor(PORT3, ratio18_1, false);
 motor RightBackMotor = motor(PORT4, ratio18_1, false);
 
-motor LauncherLF = motor(PORT5, ratio6_1, false);
-motor LauncherLB = motor(PORT6, ratio6_1, false);
-motor LauncherRF = motor(PORT7, ratio6_1, true);
-motor LauncherRB = motor(PORT8, ratio6_1, true);
+motor LauncherLF = motor(PORT5, ratio6_1, true);
+motor LauncherLB = motor(PORT6, ratio6_1, true);
+motor LauncherRF = motor(PORT7, ratio6_1, false);
+motor LauncherRB = motor(PORT8, ratio6_1, false);
 
 motor_group LauncherLeft = motor_group(LauncherLF, LauncherLB);
 motor_group LauncherRight = motor_group(LauncherRF, LauncherRB);
+
+motor Loader = motor(PORT9, ratio18_1, false);
 
 drivetrain Launcher = drivetrain(LauncherLeft, LauncherRight);
 
@@ -53,6 +55,9 @@ int rc_auto_loop_function_Controller1()
       int LBM_Speed = -Controller1.Axis4.position() - Controller1.Axis3.position() + Controller1.Axis1.position();
       int RFM_Speed = Controller1.Axis4.position() + Controller1.Axis3.position() + Controller1.Axis1.position();
       int RBM_Speed = Controller1.Axis4.position() - Controller1.Axis3.position() + Controller1.Axis1.position();
+      
+      Loader.setVelocity(100, percent);
+      Loader.spin(forward);
       
       // check if the values are inside of the deadband range
       if (LFM_Speed < 5 && LFM_Speed > -5) {
@@ -140,6 +145,16 @@ int rc_auto_loop_function_Controller1()
       {
         Launcher.setDriveVelocity(60, percent);
         Launcher.driveFor(500, distanceUnits::cm);
+      }
+
+      if(Controller1.ButtonL1.pressing())
+      {
+        Loader.setVelocity(100, percent);
+        Loader.spin(forward);
+      }
+      else
+      {
+        Loader.stop();
       }
     }
     wait(20,msec);
