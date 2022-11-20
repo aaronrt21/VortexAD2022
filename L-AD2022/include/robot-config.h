@@ -9,19 +9,19 @@ extern brain Brain;
  */
 
 // VEXcode devices
+// Drivetrain
 extern motor LeftFrontMotor;
 extern motor LeftBackMotor;
 extern motor RightFrontMotor;
 extern motor RightBackMotor;
 
+// Thrower
 extern motor LauncherLF;
 extern motor LauncherLB;
+
 extern motor LauncherRF;
-extern motor LauncherRB;
 
-extern motor_group LauncherLeft;
-extern motor_group LauncherRight;
-
+// Trigger
 extern motor Loader;
 
 extern controller Controller1;

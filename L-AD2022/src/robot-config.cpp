@@ -12,23 +12,24 @@ brain Brain;
  *
  * This should be called at the start of your int main function.
 */
-
+// Drivetrain
 motor LeftFrontMotor = motor(PORT1, ratio18_1, false);
 motor LeftBackMotor = motor(PORT2, ratio18_1, false);
 motor RightFrontMotor = motor(PORT3, ratio18_1, false);
 motor RightBackMotor = motor(PORT4, ratio18_1, false);
 
+// Thrower
 motor LauncherLF = motor(PORT5, ratio6_1, true);
-motor LauncherLB = motor(PORT6, ratio6_1, true);
+motor LauncherLB = motor(PORT6, ratio6_1, false);
 motor LauncherRF = motor(PORT7, ratio6_1, false);
-motor LauncherRB = motor(PORT8, ratio6_1, false);
+// Thrower group
+motor_group LauncherL = motor_group(LauncherLF, LauncherLB);
+motor_group LauncherR = motor_group(LauncherRF);
+// Thrower complete
+drivetrain Launcher = drivetrain(LauncherL, LauncherR);
 
-motor_group LauncherLeft = motor_group(LauncherLF, LauncherLB);
-motor_group LauncherRight = motor_group(LauncherRF, LauncherRB);
-
-motor Loader = motor(PORT9, ratio18_1, false);
-
-drivetrain Launcher = drivetrain(LauncherLeft, LauncherRight);
+// Trigger
+motor Loader = motor(PORT8, ratio18_1, false);
 
 controller Controller1 = controller(primary);
 
@@ -55,10 +56,7 @@ int rc_auto_loop_function_Controller1()
       int LBM_Speed = -Controller1.Axis4.position() - Controller1.Axis3.position() + Controller1.Axis1.position();
       int RFM_Speed = Controller1.Axis4.position() + Controller1.Axis3.position() + Controller1.Axis1.position();
       int RBM_Speed = Controller1.Axis4.position() - Controller1.Axis3.position() + Controller1.Axis1.position();
-      
-      Loader.setVelocity(100, percent);
-      Loader.spin(forward);
-      
+            
       // check if the values are inside of the deadband range
       if (LFM_Speed < 5 && LFM_Speed > -5) {
         // check if the left motor has already been stopped
@@ -133,32 +131,26 @@ int rc_auto_loop_function_Controller1()
         RightBackMotor.spin(forward);
       }
 
-      // Shoot far
-      if (Controller1.ButtonR2.pressing())
-      {
-        Launcher.setDriveVelocity(100, percent);
-        Launcher.driveFor(500, distanceUnits::cm);
-      }
+      // Long shot
+      if (Controller1.ButtonR2.pressing()){
+        Launcher.drive(forward, 100, velocityUnits::pct);
+        wait(1000, msec);
 
-      // Shoot close
-      else if (Controller1.ButtonL2.pressing())
-      {
-        Launcher.setDriveVelocity(60, percent);
-        Launcher.driveFor(500, distanceUnits::cm);
-      }
-
-      if(Controller1.ButtonL1.pressing())
-      {
-        Loader.setVelocity(100, percent);
+        Loader.setVelocity(60, percent);
         Loader.spin(forward);
       }
-      else
-      {
+
+      // Short shoot
+      // else if (Controller1.ButtonL2.pressing()){
+      //   Launcher.setDriveVelocity(60, percent);
+      //   Launcher.driveFor(500, distanceUnits::cm);
+      // }
+
+      else{
+        Launcher.stop();
         Loader.stop();
       }
     }
-    wait(20,msec);
-    
   }
   return 0;
 }
