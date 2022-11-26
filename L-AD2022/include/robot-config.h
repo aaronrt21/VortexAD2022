@@ -18,11 +18,17 @@ extern motor RightBackMotor;
 // Thrower
 extern motor LauncherLF;
 extern motor LauncherLB;
-
 extern motor LauncherRF;
 
 // Trigger
 extern motor Loader;
+
+// Elevator
+extern motor ElevatorR; 
+extern motor ElevatorL; 
+
+// Roller
+extern motor Roller;
 
 extern controller Controller1;
 extern int rc_auto_loop_function_Controller1();

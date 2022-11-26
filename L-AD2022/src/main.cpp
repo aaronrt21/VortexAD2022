@@ -1,14 +1,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
-/*    Author:       C:\Users\aaron                                            */
+/*    Author:       Vortex team                                               */
 /*    Created:      Mon Oct 31 2022                                           */
 /*    Description:  V5 project                                                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
-// ---- END VEXCODE CONFIGURED DEVICES ----
+//  ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
 using namespace vex;

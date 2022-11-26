@@ -22,6 +22,7 @@ motor RightBackMotor = motor(PORT4, ratio18_1, false);
 motor LauncherLF = motor(PORT5, ratio6_1, true);
 motor LauncherLB = motor(PORT6, ratio6_1, false);
 motor LauncherRF = motor(PORT7, ratio6_1, false);
+
 // Thrower group
 motor_group LauncherL = motor_group(LauncherLF, LauncherLB);
 motor_group LauncherR = motor_group(LauncherRF);
@@ -31,6 +32,15 @@ drivetrain Launcher = drivetrain(LauncherL, LauncherR);
 // Trigger
 motor Loader = motor(PORT8, ratio18_1, false);
 
+// Elevator
+motor ElevatorR = motor(PORT9, ratio6_1, false);
+motor ElevatorL = motor(PORT10, ratio6_1, false);
+motor_group Elevetor = motor_group(ElevatorR, ElevatorL);
+
+// Roller
+motor Roller = motor(PORT11, ratio6_1, false);
+
+// Controller
 controller Controller1 = controller(primary);
 
 // define variable for remote controller enable/disable
@@ -41,6 +51,8 @@ bool LFM_NeedsToBeStopped_Controller1 = true;
 bool LBM_NeedsToBeStopped_Controller1 = true;
 bool RFM_NeedsToBeStopped_Controller1 = true;
 bool RBM_NeedsToBeStopped_Controller1 = true;
+
+int offset = 5;
 
 bool Controller1UpDownButtonsControlMotorsStopped = true;
 
@@ -58,7 +70,7 @@ int rc_auto_loop_function_Controller1()
       int RBM_Speed = Controller1.Axis4.position() - Controller1.Axis3.position() + Controller1.Axis1.position();
             
       // check if the values are inside of the deadband range
-      if (LFM_Speed < 5 && LFM_Speed > -5) {
+      if (LFM_Speed < offset && LFM_Speed > -offset) {
         // check if the left motor has already been stopped
         if (LFM_NeedsToBeStopped_Controller1) {
           // stop the left drive motor
@@ -71,7 +83,7 @@ int rc_auto_loop_function_Controller1()
         LFM_NeedsToBeStopped_Controller1 = true;
       }
 
-      if (LBM_Speed < 5 && LBM_Speed > -5) {
+      if (LBM_Speed < offset && LBM_Speed > -offset) {
         // check if the left motor has already been stopped
         if (LBM_NeedsToBeStopped_Controller1) {
           // stop the left drive motor
@@ -84,7 +96,7 @@ int rc_auto_loop_function_Controller1()
         LBM_NeedsToBeStopped_Controller1 = true;
       }
 
-      if (RFM_Speed < 5 && RFM_Speed > -5) {
+      if (RFM_Speed < offset && RFM_Speed > -offset) {
         // check if the left motor has already been stopped
         if (RFM_NeedsToBeStopped_Controller1) {
           // stop the left drive motor
@@ -97,7 +109,7 @@ int rc_auto_loop_function_Controller1()
         RFM_NeedsToBeStopped_Controller1 = true;
       }
 
-      if (RBM_Speed < 5 && RBM_Speed > -5) {
+      if (RBM_Speed < offset && RBM_Speed > -offset) {
         // check if the left motor has already been stopped
         if (RBM_NeedsToBeStopped_Controller1) {
           // stop the left drive motor
@@ -131,26 +143,36 @@ int rc_auto_loop_function_Controller1()
         RightBackMotor.spin(forward);
       }
 
-      // Long shot
+      // Trigger long shot
       if (Controller1.ButtonR2.pressing()){
         Launcher.drive(forward, 100, velocityUnits::pct);
-        wait(1000, msec);
+        wait(800, msec);
 
         Loader.setVelocity(60, percent);
         Loader.spin(forward);
-      }
-
-      // Short shoot
-      // else if (Controller1.ButtonL2.pressing()){
-      //   Launcher.setDriveVelocity(60, percent);
-      //   Launcher.driveFor(500, distanceUnits::cm);
-      // }
-
-      else{
+      } else{
         Launcher.stop();
         Loader.stop();
       }
+
+      // Active elevator
+      if (Controller1.ButtonA.pressing()){
+        Elevetor.spin(forward, 100, percent);
+      } else{
+        Elevetor.stop();
+      }
+
+      // Active roller
+      if (Controller1.ButtonB.pressing()){
+        Roller.spin(forward, 100, percent);
+      } else{ 
+        Roller.stop();
+      }
+      
+      
     }
+    // wait before repeating the process
+    wait(20, msec);
   }
   return 0;
 }
