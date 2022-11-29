@@ -23,23 +23,50 @@ void pre_auton(void){
 
 
 /* ----------------- AUTONOMOUS PART ----------------- */
-void get_roller(bool wait){
-  // Turn left
+// Functions for drivetrain
+void move_fordward(int dist){
+  Drivetrain.driveFor(directionType::fwd, dist, distanceUnits::cm);
+}
+void move_backward(int dist){
+  Drivetrain.driveFor(directionType::rev, dist, distanceUnits::cm);
+}
+void turn_left(bool wait){
   Drivetrain.turn(left);
-  // Move forward 1 cm
-  Drivetrain.driveFor(directionType::fwd, 1, distanceUnits::cm);
-  // Make Loader spin 90°
-  Loader.spinFor(directionType::fwd, 90, rotationUnits::deg);
+}
+void turn_right(bool wait){
+  Drivetrain.turn(right);
 }
 
-void disk_collector(bool wait){
-  // Start elevator
+// Functions for roller & trigger
+void active_roller(int ang){
+  Loader.spinFor(directionType::fwd, ang, rotationUnits::deg);
+}
+void active_trigger(bool wait){
+  Loader.spin(directionType::fwd, 100, velocityUnits::pct);
+}
+
+// Functions for Elevator
+void active_elevator(bool wait){
   Elevator.spin(directionType::fwd);
+}
+
+// Functions for Launcher
+void active_launcher(bool wait){
+  Launcher.spin(directionType::fwd);
+}
+
+// Stop everything
+void stop_all(bool wait){
+  Drivetrain.stop();
+  Launcher.stop();
+  Loader.stop();
+  Elevator.stop();
 }
 
 void auton(void) {
   // Set drivetrain to it's 80% of velocity
   Drivetrain.setDriveVelocity(80, pct);
+  // vexDelay(uint32_t timems)
 }
 
 /* ------------------ CONTROL PART ------------------ */

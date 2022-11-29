@@ -95,11 +95,9 @@ int rc_auto_loop_function_Controller1(){
       if (Controller1.ButtonR2.pressing()){        
         // Spin launcher and delay 1 sec
         Launcher.spin(forward, 100, velocityUnits::pct);
-        wait(1500, msec);
-
+        wait(800, msec);
         // Start Loader
-        Loader.setVelocity(100, velocityUnits::pct);
-        Loader.spin(forward);
+        Loader.spin(forward, 100, velocityUnits::pct);
       } else{
         Launcher.stop();
         Loader.stop();

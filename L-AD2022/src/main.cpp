@@ -21,31 +21,50 @@ void pre_auton(void){
 }
 
 /* ----------------- AUTONOMOUS PART ----------------- */
-void get_roller(bool wait){
-  // Move forward 10 cm
-  Drivetrain.driveFor(directionType::fwd, 10, distanceUnits::cm);
-  // Turn right
+// Functions for drivetrain
+void move_fordward(int dist){
+  Drivetrain.driveFor(directionType::fwd, dist, distanceUnits::cm);
+}
+void move_backward(int dist){
+  Drivetrain.driveFor(directionType::rev, dist, distanceUnits::cm);
+}
+void turn_left(bool wait){
+  Drivetrain.turn(left);
+}
+void turn_right(bool wait){
   Drivetrain.turn(right);
-  // Move forward 10 cm
-  Drivetrain.driveFor(directionType::fwd, 10, distanceUnits::cm);
-  // Turn right
-  Drivetrain.turn(right);
-  // Move forward 5 cm
-  Drivetrain.driveFor(directionType::fwd, 5, distanceUnits::cm);
-  // Make Loader spin 90°
-  Loader.spinFor(directionType::fwd, 90, rotationUnits::deg);
 }
 
-void disk_collector(bool wait){
-  // Start elevator
+// Functions for roller & trigger
+void active_roller(int ang){
+  Loader.spinFor(directionType::fwd, ang, rotationUnits::deg);
+}
+void active_trigger(bool wait){
+  Loader.spin(directionType::fwd, 100, velocityUnits::pct);
+}
+
+// Functions for Elevator
+void active_elevator(bool wait){
   Elevator.spin(directionType::fwd);
 }
 
-void throw_disks(bool wait){
-  // Move forward 10 cm
-  Drivetrain.driveFor(directionType::fwd, 10, distanceUnits::cm);
-  // Throw 3 disks
-  Launcher.driveFor(directionType::fwd, 50, distanceUnits::cm);
+// Functions for Launcher
+void active_launcher(bool wait){
+  Launcher.drive(directionType::fwd);
+}
+
+// Stop everything
+void stop_all(bool wait){
+  Drivetrain.stop();
+  Launcher.stop();
+  Loader.stop();
+  Elevator.stop();
+}
+
+void auton(void) {
+  // Set drivetrain to it's 80% of velocity
+  Drivetrain.setDriveVelocity(80, pct);
+  // vexDelay(uint32_t timems)
 }
 
 /* ------------------ CONTROL PART ------------------ */
