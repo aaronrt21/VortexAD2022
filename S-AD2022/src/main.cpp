@@ -13,25 +13,21 @@
 #include "vex.h"
 using namespace vex;
 
+// A global instance of competition
 competition Competition;
 
 void pre_auton(void){
-  // Initializing Robot Configuration. DO NOT REMOVE!
+  // Initializing Robot Configuration.
   vexcodeInit();
 }
 
+
 /* ----------------- AUTONOMOUS PART ----------------- */
 void get_roller(bool wait){
-  // Move forward 10 cm
-  Drivetrain.driveFor(directionType::fwd, 10, distanceUnits::cm);
-  // Turn right
-  Drivetrain.turn(right);
-  // Move forward 10 cm
-  Drivetrain.driveFor(directionType::fwd, 10, distanceUnits::cm);
-  // Turn right
-  Drivetrain.turn(right);
-  // Move forward 5 cm
-  Drivetrain.driveFor(directionType::fwd, 5, distanceUnits::cm);
+  // Turn left
+  Drivetrain.turn(left);
+  // Move forward 1 cm
+  Drivetrain.driveFor(directionType::fwd, 1, distanceUnits::cm);
   // Make Loader spin 90°
   Loader.spinFor(directionType::fwd, 90, rotationUnits::deg);
 }
@@ -41,11 +37,9 @@ void disk_collector(bool wait){
   Elevator.spin(directionType::fwd);
 }
 
-void throw_disks(bool wait){
-  // Move forward 10 cm
-  Drivetrain.driveFor(directionType::fwd, 10, distanceUnits::cm);
-  // Throw 3 disks
-  Launcher.driveFor(directionType::fwd, 50, distanceUnits::cm);
+void auton(void) {
+  // Set drivetrain to it's 80% of velocity
+  Drivetrain.setDriveVelocity(80, pct);
 }
 
 /* ------------------ CONTROL PART ------------------ */

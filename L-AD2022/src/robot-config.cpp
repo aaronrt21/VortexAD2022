@@ -13,32 +13,32 @@ brain Brain;
  * This should be called at the start of your int main function.
 */
 // Drivetrain
-motor LeftFrontMotor = motor(PORT1, ratio18_1, false);
-motor LeftBackMotor = motor(PORT2, ratio18_1, false);
-motor RightFrontMotor = motor(PORT3, ratio18_1, false);
-motor RightBackMotor = motor(PORT4, ratio18_1, false);
+motor LeftFrontMotor = motor(PORT2, ratio18_1, false);  // 1 Left Front  -> 2
+motor LeftBackMotor = motor(PORT4, ratio18_1, false);   // 2 Left Back   -> 4
+motor RightFrontMotor = motor(PORT1, ratio18_1, false); // 3 Right Front -> 1
+motor RightBackMotor = motor(PORT3, ratio18_1, false);  // 4 Right Back  -> 3 
+
+motor_group LeftMotors = motor_group(LeftFrontMotor, LeftBackMotor);
+motor_group RightMotors = motor_group(RightFrontMotor, RightBackMotor);
+drivetrain Drivetrain = drivetrain(LeftMotors, RightMotors);
 
 // Thrower
 motor LauncherLF = motor(PORT5, ratio6_1, true);
 motor LauncherLB = motor(PORT6, ratio6_1, false);
 motor LauncherRF = motor(PORT7, ratio6_1, false);
-
 // Thrower group
 motor_group LauncherL = motor_group(LauncherLF, LauncherLB);
 motor_group LauncherR = motor_group(LauncherRF);
 // Thrower complete
 drivetrain Launcher = drivetrain(LauncherL, LauncherR);
 
-// Trigger
-motor Loader = motor(PORT8, ratio18_1, false);
+// Trigger & Roller
+motor Loader = motor(PORT8, ratio6_1, false);
+motor Trigger = motor(PORT10, ratio6_1, false);
+motor_group TL = motor_group(Loader, Trigger);
 
 // Elevator
-motor ElevatorR = motor(PORT9, ratio6_1, false);
-motor ElevatorL = motor(PORT10, ratio6_1, false);
-motor_group Elevetor = motor_group(ElevatorR, ElevatorL);
-
-// Roller
-motor Roller = motor(PORT11, ratio6_1, false);
+motor Elevator = motor(PORT9, ratio6_1, true);
 
 // Controller
 controller Controller1 = controller(primary);
@@ -57,12 +57,9 @@ int offset = 5;
 bool Controller1UpDownButtonsControlMotorsStopped = true;
 
 // define a task that will handle monitoring inputs from Controller1
-int rc_auto_loop_function_Controller1()
-{
-  while(true)
-  {
-    if(RemoteControlCodeEnabled)
-    {
+int rc_auto_loop_function_Controller1(){
+  while(true){
+    if(RemoteControlCodeEnabled){
       
       int LFM_Speed = -Controller1.Axis4.position() + Controller1.Axis3.position() + Controller1.Axis1.position();
       int LBM_Speed = -Controller1.Axis4.position() - Controller1.Axis3.position() + Controller1.Axis1.position();
@@ -143,32 +140,24 @@ int rc_auto_loop_function_Controller1()
         RightBackMotor.spin(forward);
       }
 
-      // Trigger long shot
+      // Trigger and roller long shot
       if (Controller1.ButtonR2.pressing()){
         Launcher.drive(forward, 100, velocityUnits::pct);
         wait(800, msec);
 
-        Loader.setVelocity(60, percent);
-        Loader.spin(forward);
+        TL.setVelocity(100, percent);
+        TL.spin(forward);
       } else{
         Launcher.stop();
-        Loader.stop();
+        TL.stop();
       }
 
-      // Active elevator
+      // Active elevator 
       if (Controller1.ButtonA.pressing()){
-        Elevetor.spin(forward, 100, percent);
+        Elevator.spin(forward, 100, percent);
       } else{
-        Elevetor.stop();
+        Elevator.stop();
       }
-
-      // Active roller
-      if (Controller1.ButtonB.pressing()){
-        Roller.spin(forward, 100, percent);
-      } else{ 
-        Roller.stop();
-      }
-      
       
     }
     // wait before repeating the process
